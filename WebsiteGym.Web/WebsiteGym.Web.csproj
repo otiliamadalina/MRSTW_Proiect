@@ -148,6 +148,7 @@
     <Compile Include="Models\UserRegData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Views\Admin\ListOfActiveMemberships.cshtml" />
+    <Content Include="Views\Account\UserDashboard.cshtml" />
     <None Include="Views\Admin\ManageDiscountCodes.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -218,7 +219,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

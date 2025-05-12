@@ -14,5 +14,6 @@ namespace eUseControl.BusinessLogic.DBModel
           {
           }
           public virtual DbSet<User> Users { get; set; }
+          public virtual DbSet<UserMembership> UserMemberships { get; set; }
      }
 }

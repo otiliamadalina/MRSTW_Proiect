@@ -54,6 +54,7 @@
     <Compile Include="Core\AdminApi.cs" />
     <Compile Include="Core\OrderApi.cs" />
     <Compile Include="Core\UserServices.cs" />
+    <Compile Include="DBModel\CoachContext.cs" />
     <Compile Include="DBModel\DiscountContext.cs" />
     <Compile Include="DBModel\MembershipContext.cs" />
     <Compile Include="DBModel\OrderContext.cs" />
@@ -89,13 +90,17 @@
     <Compile Include="Migrations\202504221231384_AddMembershipStatusToUsers.Designer.cs">
       <DependentUpon>202504221231384_AddMembershipStatusToUsers.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202504221240184_UpdateMembershipStatusColumnType.cs" />
-    <Compile Include="Migrations\202504221240184_UpdateMembershipStatusColumnType.Designer.cs">
-      <DependentUpon>202504221240184_UpdateMembershipStatusColumnType.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202504251603162_InitDiscountCodesTable.cs" />
     <Compile Include="Migrations\202504251603162_InitDiscountCodesTable.Designer.cs">
       <DependentUpon>202504251603162_InitDiscountCodesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202505052206104_InitUserMembershipTable.cs" />
+    <Compile Include="Migrations\202505052206104_InitUserMembershipTable.Designer.cs">
+      <DependentUpon>202505052206104_InitUserMembershipTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202505071841538_InitCoachesTable.cs" />
+    <Compile Include="Migrations\202505071841538_InitCoachesTable.designer.cs">
+      <DependentUpon>202505071841538_InitCoachesTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,11 +142,14 @@
     <EmbeddedResource Include="Migrations\202504221231384_AddMembershipStatusToUsers.resx">
       <DependentUpon>202504221231384_AddMembershipStatusToUsers.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202504221240184_UpdateMembershipStatusColumnType.resx">
-      <DependentUpon>202504221240184_UpdateMembershipStatusColumnType.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202504251603162_InitDiscountCodesTable.resx">
       <DependentUpon>202504251603162_InitDiscountCodesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505052206104_InitUserMembershipTable.resx">
+      <DependentUpon>202505052206104_InitUserMembershipTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505071841538_InitCoachesTable.resx">
+      <DependentUpon>202505071841538_InitCoachesTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

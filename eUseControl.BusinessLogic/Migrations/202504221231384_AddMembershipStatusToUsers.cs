@@ -7,7 +7,7 @@
     {
         public override void Up()
         {
-            AddColumn("dbo.Users", "MembershipStatus", c => c.Int(nullable: false, defaultValue: 0));
+            AddColumn("dbo.Users", "MembershipStatus", c => c.Boolean(nullable: false, defaultValue: false));
         }
 
         public override void Down()

@@ -9,6 +9,10 @@ namespace WebsiteGym.Web.Controllers
 {
      public class AccountController : Controller
      {
+          public ActionResult UserDashboard()
+          {
+               return View();
+          }
 
           [HttpPost]
           public ActionResult Register(AuthPageModel model)
@@ -28,6 +32,7 @@ namespace WebsiteGym.Web.Controllers
                          Role = UserRoles.User,
                          ReggisterDateTime = DateTime.Now,
                          MembershipStatus = false,
+                         UserMembershipID = 0,
                     };
 
                     var userService = new UserServices();
@@ -62,8 +67,9 @@ namespace WebsiteGym.Web.Controllers
                     var foundUser = userService.LoginUser(user);
                     if (foundUser != null)
                     {
-                              Session["UserName"] = foundUser.Name;
-                              Session["UserRole"] = foundUser.Role;
+                         Session["UserId"] = foundUser.Id;
+                         Session["UserName"] = foundUser.Name;
+                         Session["UserRole"] = foundUser.Role;
                          
                          return RedirectToAction("Index", "Home");
                     }

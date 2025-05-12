@@ -63,6 +63,7 @@
     <Compile Include="Entities\Coach.cs" />
     <Compile Include="Entities\Order\NewOrderDto.cs" />
     <Compile Include="Entities\User\User.cs" />
+    <Compile Include="Entities\User\UserMembership.cs" />
     <Compile Include="Enums\UserRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
