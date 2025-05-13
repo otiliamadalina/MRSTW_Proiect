@@ -121,12 +121,18 @@
                         <label for="discountCode" class="form-label mt-3">Discount Code</label>
                         <div class="input-group">
                             @Html.TextBoxFor(m => m.DiscountCode, new { @class = "form-control", placeholder = "Enter discount code" })
-                            <button type="button" class="btn btn-secondary" onclick="applyDiscount()">Apply</button>
+                            <button type="button" class="btn btn-secondary" id="applyDiscountBtn">Apply</button>
+                        </div>
+
+                        <div id="appliedDiscount" style="display:none;">
+                            <h4 style="font-size: 14px; font-weight: normal; margin-bottom: 10px;">Applied Discount Code:</h4>
+                            <span id="discountCodeText" style="font-size: 16px; font-weight: bold; color: #dc3545;">DISCOUNT10</span>
+                            <button id="removeDiscountFromUI" type="button" class="btn btn-danger btn-sm" style="background-color: red; border: none; color: black;">x</button>
                         </div>
 
                         <h4 class="text-dark mt-2">Subtotal: <span id="subtotal">@Model.Subtotal</span></h4>
                         <h4 class="text-dark mt-2">Total: <span id="finalPrice">@Model.TotalPrice</span></h4>
-
+                   
                     </div>
                 </div>
             </div>
@@ -140,44 +146,123 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-     $(document).ready(function() {
-         $('#membership').change(function() {
+    $(document).ready(function () {
+        $('#membership').change(function () {
             updatePrice();
-         });
-         $('#duration').change(function() {
+        });
+        $('#duration').change(function () {
             updatePrice();
-         });
+        });
 
-         function updatePrice() {
-             var membershipName = $('#membership').val();
-             var membershipDuration = $('#duration').val();
+        function updatePrice() {
+            var membershipName = $('#membership').val();
+            var membershipDuration = $('#duration').val();
 
-             if (!membershipName || !membershipDuration || parseInt(membershipDuration) <= 0) {
-                 $('#subtotal').text('0.00 $');
-                 $('#finalPrice').text('0.00 $');
-                 return;
-             }
+            if (!membershipName || !membershipDuration || parseInt(membershipDuration) <= 0) {
+                $('#subtotal').text('0.00 $');
+                $('#finalPrice').text('0.00 $');
+                return;
+            }
 
-             $.ajax({
-                 url: '@Url.Action("CalculatePrice", "Checkout")',
-                 type: 'POST',
-                 data: {
-                     membershipName: membershipName,
-                     membershipDuration: membershipDuration
-                 },
-                 success: function (response) {
-                     if (response.success) {
-                         $('#subtotal').text(response.subtotal.toFixed(2) + '$');
-                         $('#finalPrice').text(response.totalPrice.toFixed(2) + '$');
-                     } else {
-                         alert(response.message);
-                     }
-                 },
-                 error: function () {
-                     alert("An error occurred while calculating the price.");
-                 }
-             });
-         }
+            $.ajax({
+                url: '@Url.Action("CalculatePrice", "Checkout")',
+                type: 'POST',
+                data: {
+                    membershipName: membershipName,
+                    membershipDuration: membershipDuration
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#subtotal').text(response.subtotal.toFixed(2) + ' $');
+                        $('#finalPrice').text(response.totalPrice.toFixed(2) + ' $');
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while calculating the price.");
+                }
+            });
+        }
+
+        $('#applyDiscountBtn').click(function () {
+            applyDiscount();
+        });
+
+        function applyDiscount() {
+            var membershipName = $('#membership').val();
+            var membershipDuration = $('#duration').val();
+            var discountCode = $('#DiscountCode').val();
+
+            if (discountCode.trim() === '') {
+                alert('Please enter a discount code.'); 
+                return;
+            }
+
+            if (!membershipName || !membershipDuration || parseInt(membershipDuration) <= 0) {
+                $('#subtotal').text('0.00 $');
+                $('#finalPrice').text('0.00 $');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("ApplyDiscount", "Checkout")',
+                type: 'POST',
+                data: {
+                    membershipName: membershipName,
+                    membershipDuration: membershipDuration,
+                    discountCode: discountCode
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#subtotal').text(response.subtotal.toFixed(2) + " $");
+                        $('#finalPrice').text(response.totalPrice.toFixed(2) + " $");
+
+                        $('#appliedDiscount').show();
+                        $('#discountCodeText').text(discountCode);
+                        $('#DiscountCode').val('');
+                    } else {
+                        alert(response.message);
+                        $('#DiscountCode').val('');
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while applying the discount.");
+                    $('#DiscountCode').val('');
+                }
+            });
+        }
+
+        $('#removeDiscountFromUI').click(function () {
+            var membershipName = $('#membership').val();
+            var membershipDuration = $('#duration').val();
+
+            if (!membershipName || !membershipDuration || parseInt(membershipDuration) <= 0) {
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("CalculatePrice", "Checkout")',
+                type: 'POST',
+                data: {
+                    membershipName: membershipName,
+                    membershipDuration: membershipDuration
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#subtotal').text(response.subtotal.toFixed(2) + ' $');
+                        $('#finalPrice').text(response.totalPrice.toFixed(2) + ' $');
+                        $('#appliedDiscount').hide();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert("An error occurred while resetting the price.");
+                }
+            });
+
+            $('#DiscountCode').val('');
+        });
     });
 </script>
-
