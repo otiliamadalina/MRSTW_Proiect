@@ -73,7 +73,7 @@ namespace eUseControl.BusinessLogic.Core
             {
                 var membershipToEdit = context.Memberships.FirstOrDefault(m => m.Id == membership.Id);
 
-                if (membership != null)
+                if (membershipToEdit != null)
                 {
                     membershipToEdit.MembershipName = membership.membershipName;
                     membershipToEdit.Price = membership.price;

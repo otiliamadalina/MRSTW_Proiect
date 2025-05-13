@@ -75,7 +75,7 @@ namespace WebsiteGym.Web.Controllers
         //{
         //    var activeMemberships = (from user in _userContext.Users
         //                             join membership in _membershipContext.Memberships on user.MembershipId equals membership.Id
-        //                             where user.MembershipStatus == 1 
+        //                             where user.MembershipStatus == 1
         //                             select new ActiveMembershipViewModel
         //                             {
         //                                 MembershipId = membership.Id,
@@ -83,9 +83,9 @@ namespace WebsiteGym.Web.Controllers
         //                                 MembershipName = membership.MembershipName,
         //                                 Price = membership.Price,
         //                                 Details = membership.Details
-        //                             }).ToList(); 
+        //                             }).ToList();
 
-        //    return View(activeMemberships); 
+        //    return View(activeMemberships);
         //}
 
 
@@ -249,22 +249,28 @@ namespace WebsiteGym.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditMembership(MembershipViewModel model)
+        public void EditMembership(NewMembershipDto membership)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            var dto = new NewMembershipDto
+            if (membership.Id < 0)
             {
-                Id = model.Id,
-                membershipName = model.MembershipName,
-                price = (decimal)model.Price,
-                details = model.Details
-            };
+                return;
+            }
 
-            _membership.EditMembership(dto); 
-            return RedirectToAction("ManageMemberships");
+            using (var context = new MembershipContext())
+            {
+                var membershipToEdit = context.Memberships.FirstOrDefault(m => m.Id == membership.Id);
+
+                if (membershipToEdit != null)
+                {
+                    membershipToEdit.MembershipName = membership.membershipName;
+                    membershipToEdit.Price = membership.price;
+                    membershipToEdit.Details = membership.details;
+
+                    context.SaveChanges();
+                }
+            }
         }
+
 
         public ActionResult DeleteMembership(int id)
         {
