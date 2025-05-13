@@ -48,10 +48,24 @@ namespace WebsiteGym.Web.Controllers
             {
                 AvailableMemberships = _membership.GetAllMemberships(),
                 MembershipName = selectedMembership?.MembershipName,
-                AvailableDiscountCodes = _discountCodeService.GetAllDiscountCodes()
+                AvailableDiscountCodes = _discountCodeService.GetAllDiscountCodes(),
+                MembershipDuration = 0,
+                Subtotal = 0,
+                TotalPrice = 0
             };
 
             return View(model);
+        }
+
+
+        [HttpPost]
+        public JsonResult CalculatePrice(string membershipName, int membershipDuration)
+        {
+            var membership = _membership.GetAllMemberships().FirstOrDefault(m => m.MembershipName == membershipName);
+
+            decimal price = (decimal)membership.Price * membershipDuration;
+
+            return Json(new { success = true, subtotal = price, totalPrice = price });
         }
 
         // POST: CheckoutMembership

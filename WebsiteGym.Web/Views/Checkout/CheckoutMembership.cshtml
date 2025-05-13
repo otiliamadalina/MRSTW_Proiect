@@ -136,3 +136,48 @@
     <script src="~/Scripts/CheckoutMembership.js"></script>
 </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+     $(document).ready(function() {
+         $('#membership').change(function() {
+            updatePrice();
+         });
+         $('#duration').change(function() {
+            updatePrice();
+         });
+
+         function updatePrice() {
+             var membershipName = $('#membership').val();
+             var membershipDuration = $('#duration').val();
+
+             if (!membershipName || !membershipDuration || parseInt(membershipDuration) <= 0) {
+                 $('#subtotal').text('0.00 $');
+                 $('#finalPrice').text('0.00 $');
+                 return;
+             }
+
+             $.ajax({
+                 url: '@Url.Action("CalculatePrice", "Checkout")',
+                 type: 'POST',
+                 data: {
+                     membershipName: membershipName,
+                     membershipDuration: membershipDuration
+                 },
+                 success: function (response) {
+                     if (response.success) {
+                         $('#subtotal').text(response.subtotal.toFixed(2) + '$');
+                         $('#finalPrice').text(response.totalPrice.toFixed(2) + '$');
+                     } else {
+                         alert(response.message);
+                     }
+                 },
+                 error: function () {
+                     alert("An error occurred while calculating the price.");
+                 }
+             });
+         }
+    });
+</script>
+
