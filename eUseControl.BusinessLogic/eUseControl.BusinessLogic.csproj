@@ -102,6 +102,10 @@
     <Compile Include="Migrations\202505071841538_InitCoachesTable.designer.cs">
       <DependentUpon>202505071841538_InitCoachesTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202505132247030_AddChanges.cs" />
+    <Compile Include="Migrations\202505132247030_AddChanges.Designer.cs">
+      <DependentUpon>202505132247030_AddChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -150,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202505071841538_InitCoachesTable.resx">
       <DependentUpon>202505071841538_InitCoachesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202505132247030_AddChanges.resx">
+      <DependentUpon>202505132247030_AddChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

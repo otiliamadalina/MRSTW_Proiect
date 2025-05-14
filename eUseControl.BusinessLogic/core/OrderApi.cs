@@ -12,7 +12,7 @@ namespace eUseControl.BusinessLogic.Core
     {
         private readonly List<ODbTable> orders = new List<ODbTable>();
 
-        public bool CreateOrder(NewOrderDto order)
+        public bool CreateOrder(ODbTable order)
         {
             return CreateNewOrderAction(order);
         }

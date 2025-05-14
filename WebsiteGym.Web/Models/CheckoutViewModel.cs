@@ -9,11 +9,17 @@ using eUseControl.Domain.Entities.BaseEntities;
 
 namespace WebsiteGym.Web.Models
 {
-    public class OrderViewModel
+    public class CheckoutViewModel
     {
+        [Required(ErrorMessage = "Membership ID is required.")]
+        public int MembershipID { get; set; }
         [Required(ErrorMessage = "Please select a membership.")]
         [Display(Name = "Membership Name")]
         public string MembershipName { get; set; }
+
+        [Required(ErrorMessage = "Username is required.")]
+        [Display(Name = "User Name")]
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Please select membership duration.")]
         [Display(Name = "Membership Duration")]
@@ -22,8 +28,8 @@ namespace WebsiteGym.Web.Models
         [Display(Name = "Order Date")]
         public DateTime OrderDate { get; set; }
 
-        [Display(Name = "Subtotal")]
-        public decimal Subtotal { get; set; }
+        [Display(Name = "Base Price")]
+        public decimal BasePrice { get; set; }
 
         [Required]
         [Display(Name = "Total Price")]

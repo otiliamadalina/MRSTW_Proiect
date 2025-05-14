@@ -15,6 +15,21 @@ namespace eUseControl.BusinessLogic.Core
 {
     public class UserServices: IUserServices
     {
+          public UserMembership GetUserMembershipById(int id)
+          {
+               using (var context = new UserContext())
+               {
+                    return context.UserMemberships.FirstOrDefault(u => u.Id == id);
+               }
+          }
+
+          public User GetUserById(int id)
+          {
+               using (var context = new UserContext())
+               {
+                    return context.Users.FirstOrDefault(u => u.Id == id);
+               }
+          }
 
           public bool RegisterUser(User user)
           {
@@ -56,27 +71,45 @@ namespace eUseControl.BusinessLogic.Core
                return true;
           }
 
-        public bool CreateNewOrderAction(NewOrderDto order)
+        public bool CreateNewOrderAction(ODbTable order)
         {
-            if (order.Id == 0 || order.totalPrice < 0)
+            if (order.TotalPrice < 0)
             {
                 return false;
             }
 
             using (var context = new OrderContext())
             {
-                ODbTable newOrder = new ODbTable
-                {
-                    MembershipName = order.membershipName,
-                    OrderDate = order.orderDate,
-                    TotalPrice = order.totalPrice,
-                    UserName = order.userName
-                };
-
-                context.Orders.Add(newOrder);
+                context.Orders.Add(order);
                 context.SaveChanges();
             }
             return true;
         }
+
+          public int? SaveUserMembership(UserMembership userMembership)
+          {
+               if (userMembership == null)
+               {
+                    return null;
+               }
+               using (var context = new UserContext())
+               {
+                    context.UserMemberships.Add(userMembership);
+                    context.SaveChanges();
+                    return userMembership.Id;
+               }
+          }
+
+          public bool UpdateUserMembership(int? userMembershipId, User foundUser)
+          {
+               using (var context = new UserContext())
+               {
+                         foundUser.UserMembershipID = userMembershipId;
+                         foundUser.MembershipStatus = true;
+                         context.SaveChanges();
+                         return true;
+                         
+               }
+          }
      }
 }

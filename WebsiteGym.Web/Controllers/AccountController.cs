@@ -5,15 +5,52 @@ using eUseControl.BusinessLogic.Core;
 using eUseControl.Domain.Entities.User;
 using eUseControl.Domain.Enums;
 using System;
+using System.Runtime.Remoting.Messaging;
 namespace WebsiteGym.Web.Controllers
 {
      public class AccountController : Controller
      {
           public ActionResult UserDashboard()
           {
-               return View();
-          }
+               if (Session["UserRole"]?.ToString() == "Admin")
+               {
+                    return RedirectToAction("AdminDashboard", "Admin");
+               }
+               else if (Session["UserRole"]?.ToString() == "User")
+               {
+                    int userId = (int)Session["UserId"];
+                    var userService = new UserServices();
+                    var user = userService.GetUserById(userId);
+                    UserMembership userMembership = null;
+                    if (user != null)
+                    {
+                         if (user.UserMembershipID != null && user.MembershipStatus)
+                         {
+                              userMembership = userService.GetUserMembershipById((int)user.UserMembershipID);
+                         }
+                         var model = new UserDashDto
+                         {
+                              UserName = user.Name,
+                              Email = user.Email,
+                              MembershipStatus = user.MembershipStatus,
+                              RegisterDateTime = user.ReggisterDateTime,
+                              MembershipExpiration = userMembership?.MembershipExperationDate,
+                              MembershipType = userMembership?.MembershipType,
 
+                         };
+                         return View(model);
+                    }
+                    else
+                    {
+                         ModelState.AddModelError("", "User not found");
+                         return RedirectToAction("AuthPage", "Home");
+                    }
+               }
+               else
+               {
+                    return RedirectToAction("AuthPage", "Home");
+               }
+          }
           [HttpPost]
           public ActionResult Register(AuthPageModel model)
           { 
@@ -32,7 +69,8 @@ namespace WebsiteGym.Web.Controllers
                          Role = UserRoles.User,
                          ReggisterDateTime = DateTime.Now,
                          MembershipStatus = false,
-                         UserMembershipID = 0,
+                         UserMembershipID = null,
+
                     };
 
                     var userService = new UserServices();
@@ -80,5 +118,14 @@ namespace WebsiteGym.Web.Controllers
                     }
                }
         }
-    }
+
+          public ActionResult Logout()
+          {
+               Session.Clear();    
+               Session.Abandon();   
+
+               return RedirectToAction("Index", "Home");
+          }
+
+     }
 }

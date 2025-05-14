@@ -144,6 +144,7 @@
     <Compile Include="Models\DiscountViewModel.cs" />
     <Compile Include="Models\MembershipViewModel.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
+    <Compile Include="Models\UserDashDto.cs" />
     <Compile Include="Models\UserLogData.cs" />
     <Compile Include="Models\UserRegData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
